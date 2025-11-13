@@ -35,7 +35,7 @@ pair<Matrix, vector<tuple<int, int, string>>> construir_matriz_basica_con_explic
     int m = MD.size(); //Obtiene el número de filas de la matriz MD
     vector<bool> es_basica(m, true); //Crea un vector que marca TODAS las filas como básicas inicialmente
     vector<tuple<int, int, string>> eliminaciones; //instancia Vector para guardar información de cada eliminación
-
+// Se crea un lazo para analizar todas las filas de la MD y se guardan las subfilas con sus caracteristicas en otro vector. De esta manera, se imprime la MB unciamente usando las filas que fueron clasificadas como basicas.  
     for (int i = 0; i < m; ++i) { 
         if (!es_basica[i]) continue; //Si la fila i ya fue marcada como NO básica, la salta
         for (int j = 0; j < m; ++j) {
@@ -54,26 +54,29 @@ pair<Matrix, vector<tuple<int, int, string>>> construir_matriz_basica_con_explic
 
                 es_basica[i] = false; 
                 break;
-            }
-        }
+            } 
+        } 
     }
 
     Matrix MB;
-    for (int i = 0; i < m; ++i)
+    for (int i = 0; i < m; ++i)  // guarda todas las filas basicas en la matriz basica
         if (es_basica[i])
             MB.push_back(MD[i]);
 
     return {MB, eliminaciones};
 }
 
+// Calcula las densidades
 double calcular_densidad(const Matrix& mat) {
-    if (mat.empty() || mat[0].empty()) return 0.0;
-    int unos = 0, total = mat.size() * mat[0].size();
-    for (const auto& f : mat) for (int v : f) if (v == 1) ++unos;
-    return static_cast<double>(unos) / total;
+    if (mat.empty() || mat[0].empty()) return 0.0; // // retorna 0 si la matriz no tiene fias (mat.empty()) o si no tiene columnas (mat[0].empty)
+    int unos = 0, total = mat.size() * mat[0].size(); // Calcula el número total de celdas
+    for (const auto& f : mat) // Itera sobre cada vector-fila de la matriz
+        for (int v : f) //Itera sobre cada valor v en la fila actual f. v toma los valores: 0 o 1 (matriz booleana)
+            if (v == 1) ++unos; //Solo incrementa el contador si el valor es exactamente 1
+    return static_cast<double>(unos) / total; //calcula la densidad de unos y cero
 }
 
-void mostrar_matriz_con_filas_numeradas(const Matrix& mat, const string& titulo) {
+void mostrar_matriz_con_filas_numeradas(const Matrix& mat, const string& titulo) { // imprime la mat basica con las filas numeradas 
     cout << "\n>>> " << titulo << "\n";
     int filas = mat.size(), cols = filas > 0 ? mat[0].size() : 0;
     cout << "Dimensiones: " << filas << " filas x " << cols << " columnas\n";
