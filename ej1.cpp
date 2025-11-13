@@ -32,26 +32,27 @@ pair<bool, vector<int>> es_subfila(const vector<int>& q, const vector<int>& p) {
 }
 // La funcion hace: Construir_matriz_basica_con_explicacion():
 pair<Matrix, vector<tuple<int, int, string>>> construir_matriz_basica_con_explicacion(const Matrix& MD) {
-    int m = MD.size();
-    vector<bool> es_basica(m, true);
-    vector<tuple<int, int, string>> eliminaciones;
+    int m = MD.size(); //Obtiene el número de filas de la matriz MD
+    vector<bool> es_basica(m, true); //Crea un vector que marca TODAS las filas como básicas inicialmente
+    vector<tuple<int, int, string>> eliminaciones; //instancia Vector para guardar información de cada eliminación
 
-    for (int i = 0; i < m; ++i) {
-        if (!es_basica[i]) continue;
+    for (int i = 0; i < m; ++i) { 
+        if (!es_basica[i]) continue; //Si la fila i ya fue marcada como NO básica, la salta
         for (int j = 0; j < m; ++j) {
-            if (i == j || !es_basica[j]) continue;
+            if (i == j || !es_basica[j]) continue; // EXCLUYE los sig casos. No compara una fila consigo misma & No compara con filas que ya fueron eliminadas
 
-            auto [es_sub, cols] = es_subfila(MD[i], MD[j]);
+            auto [es_sub, cols] = es_subfila(MD[i], MD[j]); //Se analiza si fila es subfila (YA fue explicado antes)
             if (es_sub) {
-                stringstream ss;
+                stringstream ss; //notacion de cada fila
                 ss << "Es subfila de F" << j << " (Col ";
-                for (size_t k = 0; k < cols.size(); ++k) {
+                for (size_t k = 0; k < cols.size(); ++k) { //"Es subfila de F3 (Col 1, 3, 5: F3 tiene 1 donde F2 tiene 0)"
                     ss << cols[k];
                     if (k < cols.size() - 1) ss << ", ";
                 }
-                ss << ": F" << j << " tiene 1 donde F" << i << " tiene 0)";
-                eliminaciones.emplace_back(i, j, ss.str());
-                es_basica[i] = false;
+                ss << ": F" << j << " tiene 1 donde F" << i << " tiene 0)"; // explicacion si fila es reducida o no 
+                eliminaciones.emplace_back(i, j, ss.str()); //Guarda información de cada eliminación en un vector. (fila_eliminada, fila_dominante, explicación)
+
+                es_basica[i] = false; 
                 break;
             }
         }
