@@ -21,7 +21,7 @@ Matrix generar_matriz_booleana(int filas, int columnas, double prob_uno, mt19937
             mat[i][j] = dist(rng);
     return mat;
 }
-
+// // Función principal que determina si q es subfila de p
 pair<bool, vector<int>> es_subfila(const vector<int>& q, const vector<int>& p) {
     vector<int> p_mas_q;
     for (size_t j = 0; j < q.size(); ++j) {
