@@ -30,7 +30,7 @@ pair<bool, vector<int>> es_subfila(const vector<int>& q, const vector<int>& p) {
     }
     return {!p_mas_q.empty(), p_mas_q};
 }
-
+// La funcion hace: Construir_matriz_basica_con_explicacion():
 pair<Matrix, vector<tuple<int, int, string>>> construir_matriz_basica_con_explicacion(const Matrix& MD) {
     int m = MD.size();
     vector<bool> es_basica(m, true);
